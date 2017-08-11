@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript">
+
+        var myImage = new Image();
+
+        function displayImage() {
+
+            canvas = document.getElementById("myCanvas");
+
+            if (canvas.getContext) {
+
+                ctx = canvas.getContext("2d");
+
+                myImage.onload = function () {
+
+//rotateSquare();
+//wave();
+                    sphericWaves();
+                }
+
+                myImage.src = "http://samples.msdn.microsoft.com/workshop/samples/canvas/kestral.png";
+            }
+        }
+
+        var i = 0;
+
+        function changeImage() {
+
+            ctx.beginPath();
+            //ctx.arc(100, 100, 50, 0, 2 * Math.PI, false);
+            // ctx.clearRect(0, 0, canvas.width,canvas.height);
+            /*ctx.fillStyle = 'green';
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#003300';
+            ctx.closePath();*/
+            ctx.stroke();
+            ctx.closePath();
+            ctx.beginPath();
+            //ctx.lineWidth = 1;
+            ctx.arc(500 + 50 * Math.cos(Math.PI * i * 0.002), 500 + 50 * Math.sin(Math.PI * i * 0.009), 1, 0, 2 * Math.PI, true);
+            ctx.stroke();
+            ctx.closePath();
+            i++;
+            setTimeout(changeImage, 1);
+        }
+
+
+        function rotateSquare() {
+
+            x0 = 100 + 50 * Math.cos(Math.PI * 0.001 + Math.PI / 4);
+            y0 = 100 + 50 * Math.sin(Math.PI * 0.001 + Math.PI / 4);
+            x1 = x0 + Math.sqrt(2) * 50 * Math.cos(Math.PI * i * 0.001);
+            y1 = y0 + Math.sqrt(2) * 50 * Math.sin(Math.PI * i * 0.001);
+            x2 = x0 + Math.sqrt(2) * 50 * Math.sqrt(2) * Math.cos(Math.PI * i * 0.001 - Math.PI / 4);
+            y2 = y0 + Math.sqrt(2) * 50 * Math.sqrt(2) * Math.sin(Math.PI * i * 0.001 - Math.PI / 4);
+            x3 = x0 + Math.sqrt(2) * 50 * Math.sin(Math.PI * i * 0.001);
+            y3 = y0 - Math.sqrt(2) * 50 * Math.cos(Math.PI * i * 0.001);
+            //console.log(x0,y0)
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.moveTo(x0, y0);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.lineTo(x3, y3);
+            ctx.lineTo(x0, y0);
+            ctx.stroke();
+            ctx.closePath();
+            i++;
+            setTimeout(rotateSquare, 5);
+        }
+
+        k = 0;
+
+        function wave() {
+
+
+            ctx.clearRect(0, 0, 1920, 1000);
+            //drawCircles();
+            for (var i = 0; i < 100; i++) {
+                for (var j = 0; j < 100; j++) {
+                    x0 = 3 * 30 * (j) / 4 + 15 * Math.cos(Math.PI * k * 0.04 + Math.PI * (i + j) / 25);
+                    y0 = 3 * 30 * (i) / 4 + 15 * Math.sin(Math.PI * k * 0.04 + Math.PI * (i + j) / 25);
+                    ctx.fillStyle = 'rgb(' + Math.floor(255 - 5 * j) + ',' +
+                        Math.floor(255 - 5 * i) + ',0)';
+                    ctx.beginPath();
+                    ctx.arc(x0, y0, 4, 0, 2 * Math.PI, true);
+                    ctx.fill();
+                    ctx.stroke();
+                    //ctx.lineWidth = 1;
+                }
+            }
+
+            k++;
+            setTimeout(wave, 10);
+        }
+
+        function drawCircles() {
+            for (var i = 0; i < 100; i++) {
+                for (var j = 0; j < 100; j++) {
+                    x0 = 3 * 40 * (j) / 4;
+                    y0 = 3 * 40 * (i) / 4;
+                    ctx.beginPath();
+                    ctx.fillStyle = 'rgb(' + Math.floor(j) + ',' +
+                        Math.floor(i) + ',0)';
+                    ctx.arc(x0, y0, 20, 0, 2 * Math.PI, false);
+                    ctx.stroke();
+                    ctx.closePath();
+                    //ctx.lineWidth = 1;
+                }
+            }
+        }
+
+        function sphericWaves() {
+
+            ctx.clearRect(0, 0, 1000, 1000);
+            //drawCircles();
+            for (var i = 100; i > 0; i--) {
+                /*x0 = 3*30*(j)/4+15*Math.cos(Math.PI*k*0.04+Math.PI*(i+j)/25);
+                y0 = 3*30*(i)/4+15*Math.sin(Math.PI*k*0.04+Math.PI*(i+j)/25);*/
+                ctx.fillStyle = 'rgb(' + Math.floor(i * k) + ',' +
+                    Math.floor(255 - 25 * i * k) + ',0)';
+                ctx.beginPath();
+                ctx.arc(500, 500, 10 * i * k, 0, 2 * Math.PI, true);
+                //if(10*i*k < 100)
+                ctx.fill();
+                ctx.stroke();
+                //ctx.lineWidth = 1;
+            }
+
+            k++;
+            if (k == 10) k = 0;
+            setTimeout(sphericWaves, 100);
+
+
+        }
+    </script>
+</head>
+
+<body onload="displayImage()">
+<canvas id="myCanvas" width="1920" height="1000">
+</canvas>
+</body>
+
+</html>
